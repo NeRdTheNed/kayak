@@ -26,10 +26,10 @@ group = project.mavenGroup
 dependencies {
     //to change the versions see the gradle.properties file
     minecraft "com.mojang:minecraft:${project.minecraftVersion}"
-    mappings "net.fabricmc:yarn:${project.yarnMappings}:v2"
+    mappings "net.fabricmc:yarn:${project.minecraftVersion}+${project.yarnBuild}:v2"
     modCompile "net.fabricmc:fabric-loader:${project.loaderVersion}+${project.loaderBuild}"
 
-    modCompile "net.fabricmc.fabric-api:fabric-api:${project.apiVersion}"
+    modCompile "net.fabricmc.fabric-api:fabric-api:${project.apiVersion}+${project.apiBuild}"
 
     compileOnly "org.checkerframework:checker-qual:2.11.0"
     annotationProcessor 'net.fabricmc:fabric-mixin-compile-extensions:0.2.0.+'
@@ -162,6 +162,7 @@ processResources {
                 "repoName": project.repoName,
                 "id": project.modId,
                 "minecraftVersion": project.semanticMinecraftVersion,
+                "apiVersion": project.apiVersion,
                 "loaderVersion": project.loaderVersion
         )
     }
