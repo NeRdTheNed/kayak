@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '0.2.7-SNAPSHOT'
+    id 'fabric-loom' version '0.5-SNAPSHOT'
     id 'maven-publish'
     id 'com.jfrog.bintray' version '1.8.4'
     id 'net.minecrell.licenser' version '0.4.1'
@@ -9,8 +9,11 @@ import com.google.gson.GsonBuilder
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(8)
+	}
+}
 
 if (isNullOrEmpty(System.getenv("TRAVIS_TAG")) && !isNullOrEmpty(System.getenv('TRAVIS_BUILD_NUMBER'))) {
     version = project.modVersion + '.' + System.getenv('TRAVIS_BUILD_NUMBER')
@@ -20,14 +23,11 @@ if (isNullOrEmpty(System.getenv("TRAVIS_TAG")) && !isNullOrEmpty(System.getenv('
 logger.lifecycle("${project.repoName} version ${project.version}")
 group = project.mavenGroup
 
-minecraft {
-}
-
 dependencies {
     //to change the versions see the gradle.properties file
     minecraft "com.mojang:minecraft:${project.minecraftVersion}"
     mappings "net.fabricmc:yarn:${project.yarnMappings}:v2"
-    modCompile "net.fabricmc:fabric-loader:${project.loaderVersion}"
+    modCompile "net.fabricmc:fabric-loader:${project.loaderVersion}+${project.loaderBuild}"
 
     modCompile "net.fabricmc.fabric-api:fabric-api:${project.apiVersion}"
 
@@ -63,9 +63,6 @@ license {
     newLine = false
 }
 
-// ensure that the encoding is set to UTF-8, no matter what the system default is
-// this fixes some edge cases with special characters not displaying correctly
-// see http://yodaconditions.net/blog/fix-for-java-file-encoding-problems-with-gradle.html
 def refmaps = new ArrayList<String>()
 def mergedRefmap = file("$buildDir/mergeRefmaps/$project.minecraft.refmapName")
 
@@ -86,23 +83,12 @@ task mergeRefmaps() {
 tasks.withType(JavaCompile) {
     tasks.mergeRefmaps.dependsOn it
     options.encoding = "UTF-8"
-    // Loom is just so cursed that it does not handle extra source sets nicely
+    options.annotationProcessorPath += configurations.annotationProcessor
     doFirst {
-        def args = options.compilerArgs
         project.minecraft {
             def refmap = new File(destinationDir, refmapName).canonicalPath
-            args.add "-AinMapFileNamedIntermediary=" + mappingsProvider.tinyMappings.canonicalPath
-            args.add "-AoutMapFileNamedIntermediary=" + mappingsProvider.mappingsMixinExport.canonicalPath
-            args.add "-AoutRefMapFile=" + refmap
-            args.add "-AdefaultObfuscationEnv=named:intermediary"
             refmaps.add refmap
         }
-    }
-}
-
-afterEvaluate {
-    tasks.withType(JavaCompile) {
-        options.annotationProcessorPath += configurations.annotationProcessor
     }
 }
 
@@ -154,6 +140,11 @@ task generateData(type: JavaExec) {
 }
 
 processResources {
+
+	//TODO: Figure out if something needs to be done about this.
+	//https://docs.gradle.org/6.7-rc-4/userguide/upgrading_version_5.html#implicit_duplicate_strategy_for_copy_or_archive_tasks_has_been_deprecated
+    duplicatesStrategy = DuplicatesStrategy.WARN
+
     from(generateData.outputs.files) {
         include "/data/"
         include "/assets/"
@@ -170,8 +161,8 @@ processResources {
                 "repoOwner": project.repoOwner,
                 "repoName": project.repoName,
                 "id": project.modId,
-                "minecraftVersionLimit": project.minecraftVersionLimit,
-                "loaderVersionLimit": project.loaderVersionLimit
+                "minecraftVersion": project.semanticMinecraftVersion,
+                "loaderVersion": project.loaderVersion
         )
     }
 
@@ -187,9 +178,10 @@ processResources {
 task sourcesJar(type: Jar, dependsOn: classes) {
     archiveClassifier.set "sources"
     from sourceSets.code.allSource
+    from "LICENSE"
 }
 
-task javadocs(type: Javadoc) {
+javadoc {
     source = sourceSets.code.allJava
     classpath = sourceSets.code.compileClasspath
 
@@ -198,22 +190,24 @@ task javadocs(type: Javadoc) {
             overview = "readme.html"
         }
         links(
-                'https://google.github.io/guava/releases/21.0/api/docs/',
-                'http://asm.ow2.org/asm50/javadoc/user/',
-                'https://docs.oracle.com/javase/8/docs/api/',
-                'http://jenkins.liteloader.com/job/Mixin/javadoc/',
-                'https://logging.apache.org/log4j/2.x/log4j-api/apidocs/'
+                'https://guava.dev/releases/21.0/api/docs/',
+                'https://asm.ow2.io/javadoc/',
+                'https://logging.apache.org/log4j/2.x/log4j-api/apidocs/',
+                'https://docs.oracle.com/javase/8/docs/api/'
                 // Need to add minecraft jd publication once there is one available
         )
     }
 }
 
-task javadocsJar(type: Jar, dependsOn: javadocs) {
-    archiveClassifier.set "javadocs"
-    from javadocs.destinationDir
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    archiveClassifier.set "javadoc"
+    from javadoc.destinationDir
 }
 
 jar {
+
+	//TODO: Figure out if something needs to be done about this.
+	//https://docs.gradle.org/6.7-rc-4/userguide/upgrading_version_5.html#implicit_duplicate_strategy_for_copy_or_archive_tasks_has_been_deprecated
     duplicatesStrategy = DuplicatesStrategy.WARN
 
     from(mergeRefmaps.outputs.files) {
@@ -223,14 +217,18 @@ jar {
         exclude project.minecraft.refmapName
     }
 
+    dependsOn generateData
     from "LICENSE"
 }
 
 afterEvaluate {
     artifacts {
         archives remapJar
-        //archives remapSourcesJar.output wait till loom fix is merged
-        archives javadocsJar
+        archives(sourcesJar) {
+            classifier = "sources"
+            builtBy remapSourcesJar
+        }
+        archives javadocJar
     }
 }
 
@@ -287,8 +285,11 @@ publishing {
             // add all the jars that should be included when publishing to maven
             afterEvaluate {
                 artifact remapJar
-                //artifact remapSourcesJar.output wait till loom fix is merged
-                artifact javadocsJar
+                artifact(sourcesJar) {
+                    classifier = "sources"
+                    builtBy remapSourcesJar
+                }
+                artifact javadocJar
             }
         }
     }
@@ -313,6 +314,11 @@ publishing {
 
                 // add all the jars that should be included when publishing to maven
                 artifact remapJar
+                artifact(sourcesJar) {
+                    classifier = "sources"
+                    builtBy remapSourcesJar
+                }
+                artifact javadocJar
             }
         }
         // select the repositories you want to publish to
@@ -326,6 +332,8 @@ publishing {
                 }
             }
         }
+		// uncomment to publish to the local maven
+		// mavenLocal()
     }
 }
 
