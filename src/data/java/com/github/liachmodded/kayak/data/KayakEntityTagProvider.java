@@ -13,7 +13,7 @@ import net.minecraft.data.server.EntityTypeTagsProvider;
 import net.minecraft.entity.EntityType;
 import net.minecraft.tag.Tag;
 import net.minecraft.tag.Tag.Builder;
-import net.minecraft.tag.TagContainer;
+import net.minecraft.tag.TagGroupLoader;
 
 public class KayakEntityTagProvider extends EntityTypeTagsProvider implements KayakTagProvider<EntityType<?>> {
   
@@ -38,7 +38,7 @@ public class KayakEntityTagProvider extends EntityTypeTagsProvider implements Ka
   }
 
   @Override
-  protected void setContainer(TagContainer<EntityType<?>> container) {
+  protected void setContainer(TagGroupLoader<EntityType<?>> container) {
   }
 
   @Override

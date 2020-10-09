@@ -75,8 +75,8 @@ public final class KayakInventoryTools {
   }
 
   private static void toTags(Collection<? super CompoundTag> collection, Inventory inventory) {
-    for (int i = 0; i < inventory.getInvSize(); i++) {
-      ItemStack stack = inventory.getInvStack(i);
+    for (int i = 0; i < inventory.size(); i++) {
+      ItemStack stack = inventory.getStack(i);
       if (!stack.isEmpty()) {
         CompoundTag tag = stack.toTag(new CompoundTag());
         tag.putByte("Slot", (byte) i);
@@ -94,7 +94,7 @@ public final class KayakInventoryTools {
       return;
     }
     int slot = tag.getByte("Slot");
-    inventory.setInvStack(slot, stack);
+    inventory.setStack(slot, stack);
   }
 
   public static Iterable<ItemStack> iterate(Inventory inventory) {
@@ -104,11 +104,11 @@ public final class KayakInventoryTools {
       @Override
       protected ItemStack computeNext() {
         while (true) {
-          if (nextAvailable >= inventory.getInvSize()) {
+          if (nextAvailable >= inventory.size()) {
             return endOfData();
           }
 
-          ItemStack stack = inventory.getInvStack(nextAvailable);
+          ItemStack stack = inventory.getStack(nextAvailable);
           nextAvailable++;
           if (!stack.isEmpty()) {
             return stack;

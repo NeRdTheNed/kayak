@@ -16,33 +16,33 @@ public interface ForwardingInventory extends Inventory {
   Inventory getBackingInventory();
 
   @Override
-  default int getInvSize() {
-    return getBackingInventory().getInvSize();
+  default int size() {
+    return getBackingInventory().size();
   }
 
   @Override
-  default boolean isInvEmpty() {
-    return getBackingInventory().isInvEmpty();
+  default boolean isEmpty() {
+    return getBackingInventory().isEmpty();
   }
 
   @Override
-  default ItemStack getInvStack(int var1) {
-    return getBackingInventory().getInvStack(var1);
+  default ItemStack getStack(int var1) {
+    return getBackingInventory().getStack(var1);
   }
 
   @Override
-  default ItemStack takeInvStack(int var1, int var2) {
-    return getBackingInventory().takeInvStack(var1, var2);
+  default ItemStack removeStack(int var1, int var2) {
+    return getBackingInventory().removeStack(var1, var2);
   }
 
   @Override
-  default ItemStack removeInvStack(int var1) {
-    return getBackingInventory().removeInvStack(var1);
+  default ItemStack removeStack(int var1) {
+    return getBackingInventory().removeStack(var1);
   }
 
   @Override
-  default void setInvStack(int var1, ItemStack var2) {
-    getBackingInventory().setInvStack(var1, var2);
+  default void setStack(int var1, ItemStack var2) {
+    getBackingInventory().setStack(var1, var2);
   }
 
   @Override
@@ -51,8 +51,8 @@ public interface ForwardingInventory extends Inventory {
   }
 
   @Override
-  default boolean canPlayerUseInv(PlayerEntity var1) {
-    return getBackingInventory().canPlayerUseInv(var1);
+  default boolean canPlayerUse(PlayerEntity var1) {
+    return getBackingInventory().canPlayerUse(var1);
   }
 
   @Override
@@ -61,32 +61,32 @@ public interface ForwardingInventory extends Inventory {
   }
 
   @Override
-  default int getInvMaxStackAmount() {
-    return getBackingInventory().getInvMaxStackAmount();
+  default int getMaxCountPerStack() {
+    return getBackingInventory().getMaxCountPerStack();
   }
 
   @Override
-  default void onInvOpen(PlayerEntity playerEntity_1) {
-    getBackingInventory().onInvOpen(playerEntity_1);
+  default void onOpen(PlayerEntity playerEntity_1) {
+    getBackingInventory().onOpen(playerEntity_1);
   }
 
   @Override
-  default void onInvClose(PlayerEntity playerEntity_1) {
-    getBackingInventory().onInvClose(playerEntity_1);
+  default void onClose(PlayerEntity playerEntity_1) {
+    getBackingInventory().onClose(playerEntity_1);
   }
 
   @Override
-  default boolean isValidInvStack(int int_1, ItemStack itemStack_1) {
-    return getBackingInventory().isValidInvStack(int_1, itemStack_1);
+  default boolean isValid(int int_1, ItemStack itemStack_1) {
+    return getBackingInventory().isValid(int_1, itemStack_1);
   }
 
   @Override
-  default int countInInv(Item item_1) {
-    return getBackingInventory().countInInv(item_1);
+  default int count(Item item_1) {
+    return getBackingInventory().count(item_1);
   }
 
   @Override
-  default boolean containsAnyInInv(Set<Item> set_1) {
-    return getBackingInventory().containsAnyInInv(set_1);
+  default boolean containsAny(Set<Item> set_1) {
+    return getBackingInventory().containsAny(set_1);
   }
 }

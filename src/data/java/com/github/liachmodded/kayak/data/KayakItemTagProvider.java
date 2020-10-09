@@ -13,11 +13,11 @@ import net.minecraft.data.server.ItemTagsProvider;
 import net.minecraft.item.Item;
 import net.minecraft.tag.Tag;
 import net.minecraft.tag.Tag.Builder;
-import net.minecraft.tag.TagContainer;
+import net.minecraft.tag.TagGroupLoader;
 
 public final class KayakItemTagProvider extends ItemTagsProvider implements KayakTagProvider<Item> {
 
-  private TagContainer<Item> tagContainer;
+  private TagGroupLoader<Item> tagContainer;
 
   public KayakItemTagProvider(DataGenerator generator) {
     super(generator);
@@ -47,7 +47,7 @@ public final class KayakItemTagProvider extends ItemTagsProvider implements Kaya
   }
 
   @Override
-  protected void setContainer(TagContainer<Item> tagContainer) {
+  protected void setContainer(TagGroupLoader<Item> tagContainer) {
   }
 
   @Override

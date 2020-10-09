@@ -16,7 +16,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.vehicle.BoatEntity;
-import net.minecraft.inventory.BasicInventory;
+import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.Item;
 import net.minecraft.predicate.entity.EntityPredicates;
 import net.minecraft.screen.HopperScreenHandler;
@@ -26,7 +26,7 @@ import net.minecraft.world.World;
 public class HopperBoatEntity extends InventoryCarrierBoatEntity implements Hopper {
 
   public HopperBoatEntity(EntityType<? extends BoatEntity> type, World world) {
-    super(type, world, new BasicInventory(5));
+    super(type, world, new SimpleInventory(5));
   }
 
   @Override
@@ -80,7 +80,7 @@ public class HopperBoatEntity extends InventoryCarrierBoatEntity implements Hopp
   }
 
   protected void suck() {
-    List<ItemEntity> drops = this.world.getEntities(ItemEntity.class, this.getBoundingBox().expand(0.25D, 0.1D, 0.25D),
+    List<ItemEntity> drops = this.world.getEntitiesByClass(ItemEntity.class, this.getBoundingBox().expand(0.25D, 0.1D, 0.25D),
         EntityPredicates.VALID_ENTITY);
     if (!drops.isEmpty()) {
       HopperBlockEntity.extract(this, drops.get(0));

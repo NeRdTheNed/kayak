@@ -7,7 +7,7 @@ package com.github.liachmodded.kayak.entity;
 
 import java.util.Random;
 import net.minecraft.particle.ParticleEffect;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.WorldAccess;
 
 public final class KayakEntityTools {
 
@@ -17,7 +17,7 @@ public final class KayakEntityTools {
     return random.nextGaussian() * margin + original;
   }
 
-  public static void fuzzParticle(IWorld world, ParticleEffect particleEffect, double x, double y, double z, double margin, double speedMargin,
+  public static void fuzzParticle(WorldAccess world, ParticleEffect particleEffect, double x, double y, double z, double margin, double speedMargin,
       Random random) {
     double x1 = fuzz(x, margin, random);
     double y1 = fuzz(y, margin, random);

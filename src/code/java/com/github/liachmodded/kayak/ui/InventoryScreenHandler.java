@@ -21,7 +21,7 @@ public abstract class InventoryScreenHandler extends ScreenHandler {
     super(null, syncId);
     this.inventory = inventory;
     this.playerInventory = playerInventory;
-    inventory.onInvOpen(playerInventory.player);
+    inventory.onOpen(playerInventory.player);
   }
 
   public PlayerInventory getPlayerInventory() {
@@ -32,7 +32,7 @@ public abstract class InventoryScreenHandler extends ScreenHandler {
 
   @Override
   public boolean canUse(PlayerEntity playerEntity_1) {
-    return this.inventory.canPlayerUseInv(playerEntity_1);
+    return this.inventory.canPlayerUse(playerEntity_1);
   }
 
   @Override
@@ -69,6 +69,6 @@ public abstract class InventoryScreenHandler extends ScreenHandler {
   @Override
   public void close(PlayerEntity playerEntity_1) {
     super.close(playerEntity_1);
-    this.inventory.onInvClose(playerEntity_1);
+    this.inventory.onClose(playerEntity_1);
   }
 }

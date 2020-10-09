@@ -22,7 +22,7 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.RayTraceContext;
+import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
 
 public class CarrierBoatItem extends Item {
@@ -40,12 +40,12 @@ public class CarrierBoatItem extends Item {
   @Override
   public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
     ItemStack stack = player.getStackInHand(hand);
-    HitResult hitResult = rayTrace(world, player, RayTraceContext.FluidHandling.ANY);
+    HitResult hitResult = raycast(world, player, RaycastContext.FluidHandling.ANY);
     if (hitResult.getType() == HitResult.Type.MISS) {
       return TypedActionResult.pass(stack);
     } else {
       Vec3d facing = player.getRotationVec(1.0F);
-      List<Entity> collisions = world.getEntities(player, player.getBoundingBox().stretch(facing.multiply(5.0D)).expand(1.0D),
+      List<Entity> collisions = world.getOtherEntities(player, player.getBoundingBox().stretch(facing.multiply(5.0D)).expand(1.0D),
           COLLISION_CHECK);
       if (!collisions.isEmpty()) {
         Vec3d camera = player.getCameraPosVec(1.0F);
@@ -62,7 +62,7 @@ public class CarrierBoatItem extends Item {
         boat.updatePosition(hitResult.getPos().x, hitResult.getPos().y, hitResult.getPos().z);
         boat.setBoatType(this.type);
         boat.yaw = player.yaw;
-        if (!world.doesNotCollide(boat, boat.getBoundingBox().expand(-0.1D))) {
+        if (!world.isSpaceEmpty(boat, boat.getBoundingBox().expand(-0.1D))) {
           return TypedActionResult.fail(stack);
         }
 

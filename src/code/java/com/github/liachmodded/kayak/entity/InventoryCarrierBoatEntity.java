@@ -66,7 +66,7 @@ public abstract class InventoryCarrierBoatEntity extends CarrierBoatEntity imple
   }
 
   @Override
-  public boolean canPlayerUseInv(PlayerEntity var1) {
+  public boolean canPlayerUse(PlayerEntity var1) {
     return true;
   }
 

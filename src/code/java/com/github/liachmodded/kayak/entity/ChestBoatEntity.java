@@ -12,7 +12,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.vehicle.BoatEntity;
-import net.minecraft.inventory.BasicInventory;
+import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.Item;
 import net.minecraft.screen.GenericContainerScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
@@ -22,7 +22,7 @@ import net.minecraft.world.World;
 public class ChestBoatEntity extends InventoryCarrierBoatEntity {
 
   public ChestBoatEntity(EntityType<? extends BoatEntity> type, World world) {
-    super(type, world, new BasicInventory(27));
+    super(type, world, new SimpleInventory(27));
   }
 
   @Override

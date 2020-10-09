@@ -17,7 +17,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
 import net.fabricmc.fabric.api.tag.TagRegistry;
-import net.minecraft.command.arguments.EntityArgumentType;
+import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;

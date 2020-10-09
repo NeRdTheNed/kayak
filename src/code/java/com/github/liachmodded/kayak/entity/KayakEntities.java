@@ -10,45 +10,45 @@ import com.google.common.collect.ImmutableList;
 import java.util.Collection;
 import net.fabricmc.fabric.api.entity.FabricEntityTypeBuilder;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityCategory;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.SpawnGroup;
 import net.minecraft.util.registry.Registry;
 
 public final class KayakEntities {
 
   public static final EntityType<ChestBoatEntity> CHEST_BOAT = register("chest_boat",
-      FabricEntityTypeBuilder.create(EntityCategory.MISC, ChestBoatEntity::new)
+      FabricEntityTypeBuilder.create(SpawnGroup.MISC, ChestBoatEntity::new)
           .size(EntityDimensions.fixed(1.375F, 0.5625F))
           .trackable(80, 3)
           .build()
   );
   public static final EntityType<HopperBoatEntity> HOPPER_BOAT = register("hopper_boat",
-      FabricEntityTypeBuilder.create(EntityCategory.MISC, HopperBoatEntity::new)
+      FabricEntityTypeBuilder.create(SpawnGroup.MISC, HopperBoatEntity::new)
           .size(EntityDimensions.fixed(1.375F, 0.5625F))
           .trackable(80, 3)
           .build()
   );
   public static final EntityType<CustomBlockBoatEntity> BLOCK_BOAT = register("block_boat",
-      FabricEntityTypeBuilder.create(EntityCategory.MISC, CustomBlockBoatEntity::new)
+      FabricEntityTypeBuilder.create(SpawnGroup.MISC, CustomBlockBoatEntity::new)
           .size(EntityDimensions.fixed(1.375F, 0.5625F))
           .trackable(80, 3)
           .build()
   );
   public static final EntityType<FurnaceBoatEntity> FURNACE_BOAT = register("furnace_boat",
-      FabricEntityTypeBuilder.create(EntityCategory.MISC, FurnaceBoatEntity::new)
+      FabricEntityTypeBuilder.create(SpawnGroup.MISC, FurnaceBoatEntity::new)
           .size(EntityDimensions.fixed(1.375F, 0.5625F))
           .trackable(80, 3)
           .build()
   );
   public static final EntityType<BedBoatEntity> BED_BOAT = register("bed_boat",
-      FabricEntityTypeBuilder.create(EntityCategory.MISC, BedBoatEntity::new)
+      FabricEntityTypeBuilder.create(SpawnGroup.MISC, BedBoatEntity::new)
           .size(EntityDimensions.fixed(1.375F, 0.5625F))
           .trackable(80, 3)
           .build()
   );
   public static final EntityType<JukeboxBoatEntity> JUKEBOX_BOAT = register("jukebox_boat",
-      FabricEntityTypeBuilder.create(EntityCategory.MISC, JukeboxBoatEntity::new)
+      FabricEntityTypeBuilder.create(SpawnGroup.MISC, JukeboxBoatEntity::new)
           .size(EntityDimensions.fixed(1.375F, 0.5625F))
           .trackable(80, 3)
           .build()

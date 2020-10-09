@@ -18,7 +18,7 @@ import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.vehicle.BoatEntity;
-import net.minecraft.inventory.BasicInventory;
+import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
@@ -40,7 +40,7 @@ public class FurnaceBoatEntity extends InventoryCarrierBoatEntity implements Pit
   private int lastInclination;
 
   public FurnaceBoatEntity(EntityType<? extends BoatEntity> type, World world) {
-    super(type, world, new BasicInventory(1));
+    super(type, world, new SimpleInventory(1));
   }
 
   @Override
@@ -66,7 +66,7 @@ public class FurnaceBoatEntity extends InventoryCarrierBoatEntity implements Pit
     }
 
     while (getFuel() <= FUEL_CONSUMPTION_THRESHOLD) {
-      ItemStack fuel = inventory.getInvStack(0);
+      ItemStack fuel = inventory.getStack(0);
       if (fuel.isEmpty()) {
         break;
       }

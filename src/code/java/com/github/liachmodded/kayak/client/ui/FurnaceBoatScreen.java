@@ -30,7 +30,7 @@ public class FurnaceBoatScreen extends HandledScreen<FurnaceBoatScreenHandler> {
   @Override
   protected void drawForeground(int int_1, int int_2) {
     String string_1 = this.title.asFormattedString();
-    this.textRenderer.draw(string_1, (float) (this.width / 2 - this.textRenderer.getStringWidth(string_1) / 2), 6.0F, 4210752);
+    this.textRenderer.draw(string_1, (float) (this.width / 2 - this.textRenderer.getWidth(string_1) / 2), 6.0F, 4210752);
     this.textRenderer.draw(this.playerInventory.getDisplayName().asFormattedString(), 8.0F, (float) (this.height - 96 + 2), 4210752);
   }
 
